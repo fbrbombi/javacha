@@ -5,10 +5,10 @@ public abstract class Person {
     private int age;
     private long cc;
     private String mail;
-    private String phone;
+    private long phone;
 
 
-    public Person(String name, int age, long cc, String mail, String phone) {
+    public Person(String name, int age, long cc, String mail, long phone) {
         this.name = name;
         this.age = age;
         this.cc = cc;

@@ -4,7 +4,7 @@ import clients.Client;
 
 public class Supervisor extends Agent {
 
-    public Supervisor(String name, int age, long cc, String mail, String phone, int code) {
+    public Supervisor(String name, int age, long cc, String mail, long phone, int code) {
         super(name, age, cc, mail, phone, 2);
     }
 

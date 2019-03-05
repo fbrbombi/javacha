@@ -5,7 +5,7 @@ import clients.Client;
 
 public class Director extends Agent {
 
-    public Director(String name, int age, long cc, String mail, String phone, int code) {
+    public Director(String name, int age, long cc, String mail, long phone, int code) {
         super(name, age, cc, mail, phone, 3);
     }
 

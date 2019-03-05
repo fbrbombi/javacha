@@ -16,20 +16,18 @@ public class Dispatcher {
     public void attend(Client client) {
         if (findAvailableAgent() != null) {
             this.availableAgent = findAvailableAgent();
-        }
-        else{
+            this.availableAgent.setClient(client);
+
+        } else {
             System.out.println("Toca esperar");
         }
     }
 
     public Agent findAvailableAgent() {
-        System.out.println(agents.get(1));
-        System.out.println(agents.get(1).size());
-        System.out.println(agents.get(1).get(1).isStatus());
-
-        for (int i = 1; i < 4; i++) {
-            for (int j = 1; j < agents.get(i).size()+1; j++) {
+        for (int i = 1; i < agents.size() + 1; i++) {
+            for (int j = 1; j < agents.get(i).size() + 1; j++) {
                 if (agents.get(i).get(j).isStatus()) {
+                    agents.get(i).get(j).setStatus(false);
                     return agents.get(i).get(j);
                 }
             }
