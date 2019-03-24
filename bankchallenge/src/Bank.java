@@ -31,7 +31,7 @@ public class Bank {
         int directorSize = directors.size();
         int cashierSize = cashiers.size();
         int superSize = supervisors.size();
-        System.out.println(directorSize + cashierSize + superSize);
+        System.out.println(directorSize + cashierSize + superSize + " Agents");
         ExecutorService executor = Executors.newFixedThreadPool(directorSize + cashierSize + superSize);
         System.out.println(clients.size() + " clients");
 
@@ -41,7 +41,6 @@ public class Bank {
             ((Dispatcher) worker).setClient(client);
             executor.execute(worker);
             i++;
-            //dispatcher.attend(client);
         }
         executor.shutdown();
         while (!executor.isTerminated()) ;

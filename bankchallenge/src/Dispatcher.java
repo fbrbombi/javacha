@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -103,10 +102,6 @@ public class Dispatcher implements Runnable {
                 e.printStackTrace();
             }
             this.availableAgent.setStatus(true);
-        } else {
-
-            LOGGER.log(Level.WARNING, "Please wait");
-
         }
     }
 }
