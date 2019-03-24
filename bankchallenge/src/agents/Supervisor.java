@@ -2,9 +2,26 @@ package agents;
 
 import clients.Client;
 
-public class Supervisor extends Agent {
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-    public Supervisor(String name, int age, long cc, String mail, long phone, int code) {
+/**
+ * Supervisor is one kind of an agent
+ */
+public class Supervisor extends Agent {
+    private final static Logger LOGGER = Logger.getLogger("subnivel.Supervisor");
+
+    /**
+     * Constructor
+     *
+     * @param name  Supervisor name
+     * @param age   Supervisor age
+     * @param cc    Supervisor ID
+     * @param mail  Supervisor personal Email
+     * @param phone Supervisor personal phone
+     */
+
+    public Supervisor(String name, int age, long cc, String mail, long phone) {
         super(name, age, cc, mail, phone, 2);
     }
 
@@ -15,18 +32,27 @@ public class Supervisor extends Agent {
 
     @Override
     public void deposits(int deposit) {
-        getClient().setDeposit(deposit-5);
+        getClient().setDeposit(deposit - 5);
+        LOGGER.log(Level.INFO,"Supervisor:"+this.getName()+"Succesful Deposit");
     }
 
     @Override
     public void withdrawals(int withdraw) {
-        getClient().setDeposit((-1*withdraw)-10);
-
+        if (withdraw < getClient().getDeposit()) {
+            getClient().setDeposit((-1 * withdraw) - 10);
+            LOGGER.log(Level.INFO,"Succesful Deposit withdraw made by Supervisor");
+        } else {
+            LOGGER.log(Level.WARNING,"Supervisor:"+this.getName()+" You do not have enough money your capacity is: "+ + getClient().getDeposit()
+                    + "and you ask for" + withdraw);
+        }
     }
 
     @Override
     public void resolvingCustomerIssues(String issue) {
-        getClient().getIssue();
+        LOGGER.log(Level.INFO,"" +
+                "Supervisor:"+this.getName()+"attends your issue: Come later");
+
+
     }
 
     @Override

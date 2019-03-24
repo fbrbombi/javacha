@@ -1,23 +1,37 @@
-import agents.Cashier;
+import agents.Agent;
+import clients.Client;
+
+import java.util.List;
+
+import static variablesGenerator.PeopleGenerator.*;
+
+/**
+ * Java Challenge Bank
+ *
+ * @author Fabio A. Bombiela Ramirez
+ * @Version 1.0
+ */
+
 
 public class Bank {
 
+
     public static void main(String[] args) {
         Dispatcher dispatcher = new Dispatcher();
+        List<Client> clients = clientGen();
+        List<Agent> cashiers = cashierGen();
+        List<Agent> supervisors = supervisorsGen();
+        List<Agent> directors = directorGen();
+        dispatcher.obtainListAgents(cashiers, 1);
+        dispatcher.obtainListAgents(supervisors, 2);
+        dispatcher.obtainListAgents(directors, 3);
 
-        Cashier agent = new Cashier("Fabio", 22, 105012105, "mail@.com", 121245, 1);
-        Cashier agent2 = new Cashier("Fabio2", 22, 105012105, "mail@.com", 145454, 1);
 
-        //Client client = new Client("Fabio", 22, 105012105, "mail@.com", "1204540", 1, "");
-        //Client client2 = new Client("Fabio", 22, 105012105, "mail@.com", "1204540", 1, "");
-
-        dispatcher.setAgents(agent.getCode(), 1, agent);
-
-        dispatcher.setAgents(agent2.getCode(), 2, agent2);
-
-        //dispatcher.attend(client);
-        //dispatcher.attend(client2);
-
+        for (int i = 0; i < clients.size(); i++) {
+            dispatcher.attend(clients.get(i));
+        }
 
     }
+
+
 }
