@@ -1,4 +1,4 @@
-package variablesGenerator;
+package utils;
 
 import agents.Agent;
 import agents.Cashier;
@@ -9,7 +9,7 @@ import clients.Client;
 import java.util.ArrayList;
 import java.util.List;
 
-import static variablesGenerator.Generator.*;
+import static utils.Generator.*;
 
 /**
  * Generates random size for each kind of agent, also creates a random size of clients
@@ -18,7 +18,7 @@ public class PeopleGenerator {
 
     public static List<Client> clientGen() {
         List<Client> clients = new ArrayList<>();
-        for (int i = 0; i < ((int) (Math.random() * 20) + 1); i++) {
+        for (int i = 0; i < ((int) (Math.random() * 40) + 10); i++) {
             clients.add(new Client(randomName(), randomAge(), randomCC(), randomMail(), randomPhone(), randomIssue(), randomComment()));
         }
         return clients;
@@ -26,7 +26,7 @@ public class PeopleGenerator {
 
     public static List<Agent> cashierGen() {
         List<Agent> cashiers = new ArrayList<>();
-        for (int i = 0; i < ((int) (Math.random() * 1) + 1); i++) {
+        for (int i = 0; i < ((int) (Math.random() * 5) + 1); i++) {
             cashiers.add(new Cashier(randomName(), randomAge(), randomCC(), randomMail(), randomPhone()));
         }
         return cashiers;
@@ -34,7 +34,7 @@ public class PeopleGenerator {
 
     public static List<Agent> supervisorsGen() {
         List<Agent> supervisors = new ArrayList<>();
-        for (int i = 0; i < ((int) (Math.random() * 1) + 1); i++) {
+        for (int i = 0; i < ((int) (Math.random() * 5) + 1); i++) {
             supervisors.add(new Supervisor(randomName(), randomAge(), randomCC(), randomMail(), randomPhone()));
         }
         return supervisors;

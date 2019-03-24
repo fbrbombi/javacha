@@ -2,8 +2,10 @@ import agents.Agent;
 import clients.Client;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import static variablesGenerator.PeopleGenerator.*;
+import static utils.PeopleGenerator.*;
 
 /**
  * Java Challenge Bank
@@ -17,7 +19,8 @@ public class Bank {
 
 
     public static void main(String[] args) {
-        Dispatcher dispatcher = new Dispatcher();
+
+        Dispatcher dispatcher = new Dispatcher("" + 0);
         List<Client> clients = clientGen();
         List<Agent> cashiers = cashierGen();
         List<Agent> supervisors = supervisorsGen();
@@ -25,12 +28,23 @@ public class Bank {
         dispatcher.obtainListAgents(cashiers, 1);
         dispatcher.obtainListAgents(supervisors, 2);
         dispatcher.obtainListAgents(directors, 3);
+        int directorSize = directors.size();
+        int cashierSize = cashiers.size();
+        int superSize = supervisors.size();
+        System.out.println(directorSize + cashierSize + superSize);
+        ExecutorService executor = Executors.newFixedThreadPool(directorSize + cashierSize + superSize);
+        System.out.println(clients.size() + " clients");
 
-
-        for (int i = 0; i < clients.size(); i++) {
-            dispatcher.attend(clients.get(i));
+        int i = 1;
+        for (Client client : clients) {
+            Runnable worker = new Dispatcher("" + i);
+            ((Dispatcher) worker).setClient(client);
+            executor.execute(worker);
+            i++;
+            //dispatcher.attend(client);
         }
-
+        executor.shutdown();
+        while (!executor.isTerminated()) ;
     }
 
 

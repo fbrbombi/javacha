@@ -1,4 +1,4 @@
-package variablesGenerator;
+package utils;
 
 /**
  * This class generates random data for each field
@@ -6,7 +6,7 @@ package variablesGenerator;
 public class Generator {
 
     public static String randomName() {
-        return null;
+        return Random.generateRandomString(4);
     }
 
     public static int randomAge() {

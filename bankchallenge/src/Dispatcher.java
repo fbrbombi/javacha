@@ -11,19 +11,21 @@ import java.util.logging.Logger;
 /**
  * Dispatcher handles the communication between agent and client
  */
-public class Dispatcher {
-
+public class Dispatcher implements Runnable {
+    private static Map<Integer, Map<Integer, Agent>> agents = new HashMap<>();
     private final static Logger LOGGER = Logger.getLogger("subnivel.Dispatcher");
-    private Map<Integer, Map<Integer, Agent>> agents = new HashMap<>();
+    Thread ops;
     private Agent availableAgent;
     private long initialTime;
     private Client client;
     private List<Thread> threads = new ArrayList<Thread>();
     private int i = 0;
+    private String order;
 
 
-    public Dispatcher() {
+    public Dispatcher(String order) {
         super();
+        this.order = order;
     }
 
     /**
@@ -35,19 +37,8 @@ public class Dispatcher {
      */
 
     public void attend(Client client) {
+        this.setClient(client);
 
-        this.availableAgent = findAvailableAgent();
-        if (this.availableAgent != null) {
-
-            this.availableAgent.setClient(client);
-            this.availableAgent.executeOps();
-            LOGGER.log(Level.INFO, "You will be attended");
-
-        } else {
-
-            LOGGER.log(Level.WARNING, "Please wait");
-
-        }
     }
 
     /**
@@ -78,10 +69,10 @@ public class Dispatcher {
     public void setAgents(int codeAgent, int code, Agent agent) {
         Map<Integer, Agent> agentsPerType = new HashMap<>();
         agentsPerType.put(code, agent);
-        if (this.agents.containsKey(codeAgent)) {
-            this.agents.get(codeAgent).put(code, agent);
+        if (agents.containsKey(codeAgent)) {
+            agents.get(codeAgent).put(code, agent);
         } else {
-            this.agents.put(codeAgent, agentsPerType);
+            agents.put(codeAgent, agentsPerType);
         }
     }
 
@@ -96,4 +87,26 @@ public class Dispatcher {
         this.client = client;
     }
 
+
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName() + " Start. Order = " + order);
+        this.availableAgent = findAvailableAgent();
+        if (this.availableAgent != null) {
+
+            this.availableAgent.setClient(this.client);
+            System.out.println("Client: " + client.getName() + " You are being attended by " + availableAgent.getName());
+            this.availableAgent.executeOps();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.availableAgent.setStatus(true);
+        } else {
+
+            LOGGER.log(Level.WARNING, "Please wait");
+
+        }
+    }
 }
