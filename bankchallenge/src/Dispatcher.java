@@ -1,10 +1,14 @@
 import agents.Agent;
 import clients.Client;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -12,15 +16,11 @@ import java.util.logging.Logger;
  */
 public class Dispatcher implements Runnable {
     private static Map<Integer, Map<Integer, Agent>> agents = new HashMap<>();
-    private final static Logger LOGGER = Logger.getLogger("subnivel.Dispatcher");
-    Thread ops;
-    private Agent availableAgent;
-    private long initialTime;
     private Client client;
-    private List<Thread> threads = new ArrayList<Thread>();
-    private int i = 0;
     private String order;
-
+    private final Logger logger = Logger.getLogger("Dispatcher");
+    private Agent agent;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public Dispatcher(String order) {
         super();
@@ -31,13 +31,42 @@ public class Dispatcher implements Runnable {
      * This method is the bridge between Agent and Client
      * <p>
      * Also search if any agent is avaiable
-     *
-     * @param client
      */
 
-    public void attend(Client client) {
-        this.setClient(client);
+    public Future<String> attendWithFuture() {
+        return executor.submit(() -> {
+            Agent availableAgent = findAvailableAgent();
+            if (availableAgent != null) {
+                agent = availableAgent;
+                availableAgent.setClient(this.client);
+                logger.log(Level.INFO, "Client: " + client.getName() + " You are being attended by " + availableAgent.getName());
+                availableAgent.executeOps();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return "Attended";
+            }
+            return "Wait please";
 
+        });
+    }
+
+    public void attend() {
+        Agent availableAgent = findAvailableAgent();
+        if (availableAgent != null) {
+
+            availableAgent.setClient(this.client);
+            logger.log(Level.INFO, "Client: " + client.getName() + " You are being attended by " + availableAgent.getName());
+            availableAgent.executeOps();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
@@ -49,8 +78,8 @@ public class Dispatcher implements Runnable {
     public Agent findAvailableAgent() {
         for (int i = 1; i < agents.size() + 1; i++) {
             for (int j = 1; j < agents.get(i).size() + 1; j++) {
-                if (agents.get(i).get(j).isStatus()) {
-                    agents.get(i).get(j).setStatus(false);
+                if (agents.get(i).get(j).isAvailable()) {
+                    agents.get(i).get(j).setAvalability(false);
                     return agents.get(i).get(j);
                 }
             }
@@ -76,7 +105,7 @@ public class Dispatcher implements Runnable {
     }
 
 
-    public void obtainListAgents(List<Agent> agent, int code) {
+    public void obtainListAgents(List<Agent> agent) {
         for (int i = 0; i < agent.size(); i++) {
             this.setAgents(agent.get(i).getCode(), i + 1, agent.get(i));
         }
@@ -89,19 +118,21 @@ public class Dispatcher implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread().getName() + " Start. Order = " + order);
-        this.availableAgent = findAvailableAgent();
-        if (this.availableAgent != null) {
+        logger.log(Level.INFO, Thread.currentThread().getName() + " Start. Order = " + order);
 
-            this.availableAgent.setClient(this.client);
-            System.out.println("Client: " + client.getName() + " You are being attended by " + availableAgent.getName());
-            this.availableAgent.executeOps();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.availableAgent.setStatus(true);
+        Future<String> process = attendWithFuture();
+        while (!process.isDone()) ;
+
+        try {
+            logger.log(Level.INFO, process.get() + " Order " + order);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+
         }
+        agent.setAvalability(true);
+        executor.shutdown();
+
     }
 }

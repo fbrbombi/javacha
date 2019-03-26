@@ -18,7 +18,7 @@ public class PeopleGenerator {
 
     public static List<Client> clientGen() {
         List<Client> clients = new ArrayList<>();
-        for (int i = 0; i < ((int) (Math.random() * 40) + 10); i++) {
+        for (int i = 0; i < ((int) (Math.random() * 40) + 40); i++) {
             clients.add(new Client(randomName(), randomAge(), randomCC(), randomMail(), randomPhone(), randomIssue(), randomComment()));
         }
         return clients;

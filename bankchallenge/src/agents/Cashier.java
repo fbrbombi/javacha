@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 public class Cashier extends Agent {
     /**
      * Constructor
+     *
      * @param name Cashier name
      * @param age  Cashier age
      * @param cc   Cashier personal ID
@@ -32,17 +33,17 @@ public class Cashier extends Agent {
     @Override
     public void deposits(int deposit) {
         getClient().setDeposit(deposit);
-        LOGGER.log(Level.INFO,"Cashier:Succesful Deposit");
+        LOGGER.log(Level.INFO, "Cashier " + this.getName() + " :Succesful Deposit");
     }
 
     @Override
     public void withdrawals(int withdraw) {
         if (withdraw < getClient().getDeposit()) {
             getClient().setDeposit(-1 * withdraw);
-            LOGGER.log(Level.INFO,"Succesful Deposit withdraw made by Cashier");
+            LOGGER.log(Level.INFO, "Succesful Deposit withdraw made by Cashier " + this.getName());
 
         } else {
-            LOGGER.log(Level.WARNING,"Cashier:You do not have enough money your capacity is: "+ + getClient().getDeposit()
+            LOGGER.log(Level.WARNING, "Cashier:You do not have enough money your capacity is: " + +getClient().getDeposit()
                     + "and you ask for" + withdraw);
 
         }
@@ -50,16 +51,16 @@ public class Cashier extends Agent {
 
     @Override
     public void resolvingCustomerIssues(String issue) {
-        LOGGER.log(Level.INFO,"Cashier"+this.getName()+" attends your issue: Come later");
+        LOGGER.log(Level.INFO, "Cashier " + this.getName() + " attends your issue: Come later");
     }
 
     @Override
-    public boolean isStatus() {
-        return super.isStatus();
+    public boolean isAvailable() {
+        return super.isAvailable();
     }
 
     @Override
-    public void setStatus(boolean status) {
-        super.setStatus(status);
+    public void setAvalability(boolean status) {
+        super.setAvalability(status);
     }
 }

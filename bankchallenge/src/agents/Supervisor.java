@@ -33,35 +33,35 @@ public class Supervisor extends Agent {
     @Override
     public void deposits(int deposit) {
         getClient().setDeposit(deposit - 5);
-        LOGGER.log(Level.INFO,"Supervisor:"+this.getName()+"Succesful Deposit");
+        LOGGER.log(Level.INFO, "Supervisor:" + this.getName() + " Succesful Deposit");
     }
 
     @Override
     public void withdrawals(int withdraw) {
         if (withdraw < getClient().getDeposit()) {
             getClient().setDeposit((-1 * withdraw) - 10);
-            LOGGER.log(Level.INFO,"Succesful Deposit withdraw made by Supervisor");
+            LOGGER.log(Level.INFO, "Succesful Deposit withdraw made by Supervisor " + this.getName());
         } else {
-            LOGGER.log(Level.WARNING,"Supervisor:"+this.getName()+" You do not have enough money your capacity is: "+ + getClient().getDeposit()
+            LOGGER.log(Level.WARNING, "Supervisor: " + this.getName() + " You do not have enough money your capacity is: " + +getClient().getDeposit()
                     + "and you ask for" + withdraw);
         }
     }
 
     @Override
     public void resolvingCustomerIssues(String issue) {
-        LOGGER.log(Level.INFO,"" +
-                "Supervisor:"+this.getName()+"attends your issue: Come later");
+        LOGGER.log(Level.INFO, "" +
+                "Supervisor: " + this.getName() + " attends your issue: Come later");
 
 
     }
 
     @Override
-    public boolean isStatus() {
-        return super.isStatus();
+    public boolean isAvailable() {
+        return super.isAvailable();
     }
 
     @Override
-    public void setStatus(boolean status) {
-        super.setStatus(status);
+    public void setAvalability(boolean status) {
+        super.setAvalability(status);
     }
 }

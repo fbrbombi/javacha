@@ -25,9 +25,9 @@ public class Bank {
         List<Agent> cashiers = cashierGen();
         List<Agent> supervisors = supervisorsGen();
         List<Agent> directors = directorGen();
-        dispatcher.obtainListAgents(cashiers, 1);
-        dispatcher.obtainListAgents(supervisors, 2);
-        dispatcher.obtainListAgents(directors, 3);
+        dispatcher.obtainListAgents(cashiers);
+        dispatcher.obtainListAgents(supervisors);
+        dispatcher.obtainListAgents(directors);
         int directorSize = directors.size();
         int cashierSize = cashiers.size();
         int superSize = supervisors.size();

@@ -51,7 +51,7 @@ public abstract class Agent extends Person implements iBankOperation {
      * @return status: It means if the agent has a client, the agent is busy so it is not available (Ex: Available=true, Not Avaiable=false)
      */
 
-    public boolean isStatus() {
+    public boolean isAvailable() {
         return status;
     }
 
@@ -61,7 +61,7 @@ public abstract class Agent extends Person implements iBankOperation {
      * @param status : If the agent has assigned a client the status will become not available (statud=false)
      */
 
-    public void setStatus(boolean status) {
+    public void setAvalability(boolean status) {
         this.status = status;
     }
 
